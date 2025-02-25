@@ -3,9 +3,10 @@ import { useDrop } from "react-dnd";
 import { useState, useRef, useEffect, useContext } from "react";
 import Image from "next/image";
 import { SizeContext } from "@/app/context/NavbarContext";
+import { v4 as uuidv4 } from 'uuid';
 
 type DroppedItem = {
-  id: number;
+  id: string;
   type: "text" | "image";
   content?: string;
 };
@@ -22,10 +23,10 @@ const DropArea: React.FC = () => {
       setItems((prev) => [
         ...prev,
         {
-          id: Math.random(), // Avoid hydration mismatch
+          id: uuidv4(), // Avoid hydration mismatch
           type: item.type,
           content:
-            item.type === "text" ? "Edit me" : "/assets/placeholder.svg", // ✅ Use a local placeholder image
+            item.type === "text" ? "Edit me" : "../../assets/placeholder.svg", // ✅ Use a local placeholder image
         },
       ]);
     },
@@ -55,6 +56,21 @@ const DropArea: React.FC = () => {
     reader.readAsDataURL(selectedImage);
   };
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState("Initial text");
+
+  const handleFocus = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleChange = (e:any) => {
+    setText(e.target.value);
+  };
+
   return (
     <div
     ref={ref}
@@ -64,20 +80,31 @@ const DropArea: React.FC = () => {
     {items.map((item) => (
       <div key={item.id} className="p-2 my-2" style={{ flexBasis: "48%" }}>
         {item.type === "text" ? (
-          <div className="resizable" style={{ resize: "both", overflow: "auto", height: "150px" }}>
-            <input
+          <div className="resizable" style={{ resize: "both", overflow: "auto", height: "30px" }}>
+           {isEditing ? <input
               type="text"
+              value={text}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onChange={handleChange}
               placeholder="Enter your text"
               className="border p-1 w-full h-full"
-              style={{ resize: "none" }}
-            />
+              style={{
+                resize: "both",
+                fontSize: "24px", // Increase font size
+              }}            />
+            : (
+              <p onClick={handleFocus}>{text}</p>
+            )}
+            
           </div>
         ) : (
-          <div className="resizable relative" style={{ resize: "both", overflow: "auto" }}>
+          <div className="resizable relative">
             <Image
               src={item.content || "https://placehold.co/600x400"}
-              width={300}
-              height={200}
+              width={30}
+              layout="responsive"
+              height={20}
               alt="Placeholder Image"
             />
             <input
