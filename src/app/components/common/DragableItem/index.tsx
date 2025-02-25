@@ -2,14 +2,13 @@
 
 import { useDrag } from "react-dnd";
 import { useRef } from "react";
+import { DraggableItemProps } from "../../pages/types";
+import useHome from "../../pages/useHome";
 
-type DraggableItemProps = {
-  type: "text" | "image";
-};
+
 
 const DraggableItem: React.FC<DraggableItemProps> = ({ type }) => {
-  const ref = useRef<HTMLDivElement>(null);
-
+  const { ref } = useHome();
   const [{ isDragging }, drag] = useDrag(() => ({
     type, // This must match the `accept` type in DropArea
     item: { type }, // ✅ Now passing the type explicitly

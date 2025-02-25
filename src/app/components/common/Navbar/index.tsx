@@ -6,8 +6,7 @@ import { DesktopWindows, PhoneIphone } from "@mui/icons-material";
 import { SizeContext } from "@/app/context/NavbarContext";
 
 function Navbar() {
-//   const [selectedSize, setSelectedSize] = useState("desktop");
-const { selectedSize, setSelectedSize } = useContext(SizeContext);
+const { setSelectedSize } = useContext(SizeContext);
 
   const handleSizeChange = (size:any) => {
     setSelectedSize(size);

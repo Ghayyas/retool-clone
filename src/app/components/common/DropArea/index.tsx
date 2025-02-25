@@ -1,18 +1,17 @@
 "use client";
 import { useDrop } from "react-dnd";
-import { useState, useRef, useEffect, useContext, ChangeEvent } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import { SizeContext } from "@/app/context/NavbarContext";
 import { v4 as uuidv4 } from 'uuid';
 import useHome from "../../pages/useHome";
+import { ItemContainer, ResizableDiv } from "../style";
 
 
 
 const DropArea: React.FC = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  // const [items, setItems] = useState<DroppedItem[]>([]);
   const { selectedSize } = useContext(SizeContext);
-  const { handleImageChange, items, setItems } = useHome();
+  const { handleImageChange, items, setItems,isEditing, text,handleFocus,handleBlur,handleChange,ref  } = useHome();
 
 
 
@@ -25,7 +24,7 @@ const DropArea: React.FC = () => {
           id: uuidv4(), // Avoid hydration mismatch
           type: item.type,
           content:
-            item.type === "text" ? "Edit me" : "../../assets/placeholder.svg", // ✅ Use a local placeholder image
+            item.type === "text" ? "Edit me" : "/assets/demo.png", // ✅ Use a local placeholder image
         },
       ]);
     },
@@ -36,22 +35,6 @@ const DropArea: React.FC = () => {
 
   drop(ref);
 
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [text, setText] = useState("Initial text");
-
-  const handleFocus = () => {
-    setIsEditing(true);
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
-
-  const handleChange = (e:any) => {
-    setText(e.target.value);
-  };
-
   return (
     <div
     ref={ref}
@@ -59,9 +42,9 @@ const DropArea: React.FC = () => {
     style={{ display: selectedSize == 'desktop' ? "flex" : "block", flexDirection: "row", flexWrap: "wrap" }}
   >
     {items.map((item) => (
-      <div key={item.id} className="p-2 my-2" style={{ flexBasis: "48%" }}>
+      <ItemContainer key={item.id}>
         {item.type === "text" ? (
-          <div className="resizable" style={{ resize: "both", overflow: "auto", height: "30px" }}>
+          <ResizableDiv>
            {isEditing ? <input
               type="text"
               value={text}
@@ -78,7 +61,7 @@ const DropArea: React.FC = () => {
               <p onClick={handleFocus}>{text}</p>
             )}
             
-          </div>
+          </ResizableDiv>
         ) : (
           <div className="resizable relative">
             <Image
@@ -97,7 +80,7 @@ const DropArea: React.FC = () => {
             />
           </div>
         )}
-      </div>
+      </ItemContainer>
     ))}
   </div>
   );
