@@ -1,3 +1,5 @@
+"use client";
+
 import { useDrag } from "react-dnd";
 import { useRef } from "react";
 

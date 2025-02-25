@@ -1,20 +1,19 @@
 "use client";
 import { useDrop } from "react-dnd";
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext, ChangeEvent } from "react";
 import Image from "next/image";
 import { SizeContext } from "@/app/context/NavbarContext";
 import { v4 as uuidv4 } from 'uuid';
+import useHome from "../../pages/useHome";
 
-type DroppedItem = {
-  id: string;
-  type: "text" | "image";
-  content?: string;
-};
+
 
 const DropArea: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const [items, setItems] = useState<DroppedItem[]>([]);
+  // const [items, setItems] = useState<DroppedItem[]>([]);
   const { selectedSize } = useContext(SizeContext);
+  const { handleImageChange, items, setItems } = useHome();
+
 
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -37,24 +36,6 @@ const DropArea: React.FC = () => {
 
   drop(ref);
 
-  useEffect(() => {
-    console.log("items", selectedSize);
-  }, [items]);
-
-  const handleImageChange = (e:any, id:any) => {
-    const selectedImage = e.target.files[0];
-    const reader = new FileReader();
-  
-    reader.onload = () => {
-      const imageDataUrl = reader.result;
-      // Update the item's content with the selected image
-      setItems((prevItems:any) =>
-        prevItems.map((item:any) => (item.id === id ? { ...item, content: imageDataUrl } : item))
-      );
-    };
-  
-    reader.readAsDataURL(selectedImage);
-  };
 
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState("Initial text");
@@ -106,6 +87,7 @@ const DropArea: React.FC = () => {
               layout="responsive"
               height={20}
               alt="Placeholder Image"
+              className="border"
             />
             <input
               type="file"

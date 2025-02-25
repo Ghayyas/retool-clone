@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext, useState } from "react";
 import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import { DesktopWindows, PhoneIphone } from "@mui/icons-material";

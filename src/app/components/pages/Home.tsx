@@ -4,6 +4,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DraggableItem, DropArea } from "../common/index";
 import Navbar from "../common/Navbar";
 import { SizeProvider } from "@/app/context/NavbarContext";
+import { components } from "./constants";
 
 const Home = () => {
   return (
@@ -14,7 +15,7 @@ const Home = () => {
       <div className="flex space-x-4 p-4">
         {/* Sidebar */}
         <div className="w-1/4 border p-2">
-          <h2>Components</h2>
+          <h2>{components}</h2>
           <DraggableItem type="text" />
           <DraggableItem type="image" />
         </div>
