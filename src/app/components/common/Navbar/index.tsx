@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import { DesktopWindows, PhoneIphone } from "@mui/icons-material";
 import { SizeContext } from "@/app/context/NavbarContext";
@@ -8,7 +8,7 @@ import { SizeContext } from "@/app/context/NavbarContext";
 function Navbar() {
 const { setSelectedSize } = useContext(SizeContext);
 
-  const handleSizeChange = (size:any) => {
+  const handleSizeChange = (size:string) => {
     setSelectedSize(size);
   };
 
