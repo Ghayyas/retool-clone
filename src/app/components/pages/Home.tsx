@@ -2,9 +2,14 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DraggableItem, DropArea } from "../common/index";
+import Navbar from "../common/Navbar";
+import { SizeProvider } from "@/app/context/NavbarContext";
 
 const Home = () => {
   return (
+    <>
+      <SizeProvider>
+      <Navbar/> 
     <DndProvider backend={HTML5Backend}>
       <div className="flex space-x-4 p-4">
         {/* Sidebar */}
@@ -20,6 +25,10 @@ const Home = () => {
         </div>
       </div>
     </DndProvider>
+      </SizeProvider>
+  
+    </>
+ 
   );
 };
 
